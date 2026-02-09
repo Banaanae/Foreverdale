@@ -19,3 +19,7 @@ Client download (when server actually good)
 
 1. Start server via build.sh
 2. Open apk then run frida.sh
+
+## Credits
+- Redirect script by astralsc
+- Some classes from nbs
