@@ -1,0 +1,19 @@
+{
+  "name": "foreverdale",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "build": "esbuild --bundle index.ts --platform=node --outfile=server.js"
+  },
+  "author": "Banaanae",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@types/frida-gum": "^18.3.1",
+    "esbuild": "^0.27.2",
+    "frida": "^16.7.19"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.2"
+  }
+}
