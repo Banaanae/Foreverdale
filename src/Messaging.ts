@@ -1,6 +1,6 @@
 import { ByteStream } from "./ByteStream"
 import { ClientHelloMessage } from "./Messages/Client/ClientHelloMessage"
-import { TitanLoginMessage } from "./Messages/Client/TitanLoginMessage";
+import { LoginMessage } from "./Messages/Client/LoginMessage";
 
 export class Messaging {
     static Send() {
@@ -17,7 +17,7 @@ export function handleMessage(id: number, stream: ByteStream) {
             break
         }
         case 10101: {
-            response = TitanLoginMessage.execute(TitanLoginMessage.decode(stream))
+            response = LoginMessage.execute(LoginMessage.decode(stream))
             break
         }
     }
