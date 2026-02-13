@@ -1,8 +1,10 @@
 import { ByteStream } from "../../ByteStream";
+import { SendMessage } from "../../Messaging";
+import { LoginOkMessage } from "../Server/LoginOkMessage";
 
 export class LoginMessage {
     static decode(stream: ByteStream) {
-        stream.readLong()
+        /*stream.readLong()
         stream.readString()
         stream.readInt()
         stream.readInt()
@@ -41,13 +43,14 @@ export class LoginMessage {
                 stream.readByte()
         }
 
+        stream.readString() // Compressed
         stream.readVInt()
-        stream.readBoolean()
+        stream.readBoolean()*/
 
         return
     }
 
     static execute(arg: any) {
-
+        return SendMessage(29125, LoginOkMessage.encode(), 1)
     }
 }

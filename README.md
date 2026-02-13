@@ -6,7 +6,7 @@ Very early Everdale private server
 
 ### Client
 
-Client download (when server actually good)
+Client download (available when server actually good)
 
 **Making your own:**
 
@@ -21,5 +21,5 @@ Client download (when server actually good)
 2. Open apk then run frida.sh
 
 ## Credits
-- Redirect script by astralsc
+- Redirect and arxan killer script by S.B and bread (updated to everdale by me :)
 - Some classes from nbs
