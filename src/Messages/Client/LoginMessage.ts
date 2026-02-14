@@ -1,6 +1,7 @@
 import { ByteStream } from "../../ByteStream";
 import { SendMessage } from "../../Messaging";
 import { LoginOkMessage } from "../Server/LoginOkMessage";
+import { OwnHomeDataMessage } from "../Server/OwnHomeDataMessage";
 
 export class LoginMessage {
     static decode(stream: ByteStream) {
@@ -51,6 +52,9 @@ export class LoginMessage {
     }
 
     static execute(arg: any) {
-        return SendMessage(29125, LoginOkMessage.encode(), 1)
+        const packets = []
+        packets.push(SendMessage(29125, LoginOkMessage.encode(), 1))
+        packets.push(SendMessage(24548, OwnHomeDataMessage.encode()))
+        return packets
     }
 }
