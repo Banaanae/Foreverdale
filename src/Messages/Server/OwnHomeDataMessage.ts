@@ -1,14 +1,19 @@
-import { ByteStream } from "../../ByteStream";
+import { PiranhaMessage } from "../../PiranhaMessage";
 
-export class OwnHomeDataMessage {
-    static encode() {
-        let stream = new ByteStream([])
+export class OwnHomeDataMessage extends PiranhaMessage {
+    stream: any;
 
-        stream.writeInt(1)
-        stream.writeLong(0, 1)
+    constructor (session: any) {
+        super(session)
+        this.id = 24548
+        this.version = 0
+        this.stream = this.DataStream.getByteStream()
+    }
+
+    async encode() {
+        this.stream.writeInt(1)
+        this.stream.writeLong(0, 1)
         // (a1 + 160) + 24LL)
-        stream.writeInt(1)
-
-        return stream.payload
+        this.stream.writeInt(1)
     }
 }

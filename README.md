@@ -17,7 +17,7 @@ Client download (available when server actually good)
 
 ### Server
 
-1. Start server via build.sh
+1. Start server via `npm start`
 2. Open apk then run frida.sh
 
 ## Credits

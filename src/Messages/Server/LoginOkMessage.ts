@@ -1,40 +1,45 @@
-import { ByteStream } from "../../ByteStream";
+import { PiranhaMessage } from "../../PiranhaMessage";
 
-export class LoginOkMessage {
-    static encode() {
-        let stream = new ByteStream([])
+export class LoginOkMessage extends PiranhaMessage {
+    stream: any;
 
-        stream.writeLong(0, 1);
-        stream.writeLong(0, 1);
-        stream.writeString("abc");
-        stream.writeString("");
-        stream.writeString("");
-        stream.writeInt(1);
-        stream.writeInt(2);
-        stream.writeInt(3);
-        stream.writeInt(4);
-        stream.writeString("prod");
-        stream.writeInt(0);
-        stream.writeInt(0);
-        stream.writeInt(0);
-        stream.writeString("");
-        stream.writeString(Date.now().toString());
-        stream.writeString("1714237625000");
-        stream.writeInt(0);
-        stream.writeString("");
-        stream.writeString("AU");
-        stream.writeString("");
-        stream.writeInt(3);
-        stream.writeString("");
-        stream.writeString("");
-        stream.writeString("");
-        stream.writeString("");
-        stream.writeBoolean(true);
-        stream.writeBoolean(false);
-        stream.writeBoolean(false);
-        stream.writeVInt(0);
-        stream.writeString("");
+    constructor (session: any) {
+        super(session)
+        this.id = 29125
+        this.version = 1
+        this.stream = this.DataStream.getByteStream()
+    }
 
-        return stream.payload
+    async encode() {
+        this.stream.writeLong(0, 1);
+        this.stream.writeLong(0, 1);
+        this.stream.writeString("abc");
+        this.stream.writeString("");
+        this.stream.writeString("");
+        this.stream.writeInt(1);
+        this.stream.writeInt(2);
+        this.stream.writeInt(3);
+        this.stream.writeInt(4);
+        this.stream.writeString("prod");
+        this.stream.writeInt(0);
+        this.stream.writeInt(0);
+        this.stream.writeInt(0);
+        this.stream.writeString("");
+        this.stream.writeString(Date.now().toString());
+        this.stream.writeString("1714237625000");
+        this.stream.writeInt(0);
+        this.stream.writeString("");
+        this.stream.writeString("AU");
+        this.stream.writeString("");
+        this.stream.writeInt(3);
+        this.stream.writeString("");
+        this.stream.writeString("");
+        this.stream.writeString("");
+        this.stream.writeString("");
+        this.stream.writeBoolean(true);
+        this.stream.writeBoolean(false);
+        this.stream.writeBoolean(false);
+        this.stream.writeVInt(0);
+        this.stream.writeString("");
     }
 }

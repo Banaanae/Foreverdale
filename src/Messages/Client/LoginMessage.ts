@@ -1,60 +1,66 @@
-import { ByteStream } from "../../ByteStream";
-import { SendMessage } from "../../Messaging";
+import { PiranhaMessage } from "../../PiranhaMessage";
 import { LoginOkMessage } from "../Server/LoginOkMessage";
 import { OwnHomeDataMessage } from "../Server/OwnHomeDataMessage";
 
-export class LoginMessage {
-    static decode(stream: ByteStream) {
-        /*stream.readLong()
-        stream.readString()
-        stream.readInt()
-        stream.readInt()
-        stream.readInt()
-        stream.readString()
-        stream.readString()
-        stream.readString()
-        stream.readString()
-        stream.readString()
-        stream.readDataReference()
-        stream.readString()
-        stream.readString()
-        stream.readString()
-        stream.readBoolean()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readBoolean()
-        stream.readString()
-        stream.readInt()
-        stream.readVInt()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readVInt()
-        stream.readString()
-        stream.readStringReference()
-        stream.readStringReference()
-        stream.readStringReference()
+export class LoginMessage extends PiranhaMessage {
+    stream: any;
 
-        if (stream.readBoolean()) {
-            let len = stream.readBytesLength()
+    constructor (session: any) {
+        super(session)
+        this.id = 10101
+        this.version = 0
+        this.stream = this.DataStream.getByteStream()
+    }
+
+    async decode() {
+        this.stream.readLong()
+        this.stream.readString()
+        this.stream.readInt()
+        this.stream.readInt()
+        this.stream.readInt()
+        this.stream.readString()
+        this.stream.readString()
+        this.stream.readString()
+        this.stream.readString()
+        this.stream.readString()
+        this.stream.readDataReference()
+        this.stream.readString()
+        this.stream.readString()
+        this.stream.readString()
+        this.stream.readBoolean()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readBoolean()
+        this.stream.readString()
+        this.stream.readInt()
+        this.stream.readVInt()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readVInt()
+        this.stream.readString()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+        this.stream.readStringReference()
+
+        if (this.stream.readBoolean()) {
+            let len = this.stream.readBytesLength()
             for (let i = 0; i < len; i++)
-                stream.readByte()
+                this.stream.readByte()
         }
 
-        stream.readString() // Compressed
-        stream.readVInt()
-        stream.readBoolean()*/
+        this.stream.readString() // Compressed
+        this.stream.readVInt()
+        this.stream.readBoolean()
 
         return
     }
 
-    static execute(arg: any) {
-        const packets = []
-        packets.push(SendMessage(29125, LoginOkMessage.encode(), 1))
-        packets.push(SendMessage(24548, OwnHomeDataMessage.encode()))
-        return packets
+    async execute() {
+        await new LoginOkMessage(this.session).send()
+        await new OwnHomeDataMessage(this.session).send()
     }
 }

@@ -2,18 +2,22 @@
   "name": "foreverdale",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "build": "esbuild --bundle index.ts --platform=node --outfile=server.js"
+    "start": "tsx ."
   },
   "author": "Banaanae",
   "license": "GPL-3.0",
   "dependencies": {
     "@types/frida-gum": "^18.3.1",
     "esbuild": "^0.27.2",
-    "frida": "^16.7.19"
+    "frida": "^16.7.19",
+    "glob": "7.2",
+    "simple-rc4": "^0.0.1-b"
   },
   "devDependencies": {
-    "@types/node": "^25.2.2"
+    "@types/node": "^25.2.2",
+    "tsx": "^4.21.0"
   }
 }
