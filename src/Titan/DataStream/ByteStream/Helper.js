@@ -2,7 +2,6 @@ const ByteStream = require(".")
 const BitStream = require("../BitStream")
 const GlobalID = require("../../GlobalID")
 const LogicLong = require("../../LogicLong")
-const LogicBattlePlayerMap = require("../../../Logic/LogicBattlePlayerMap")
 
 /**
  * ByteStreamHelper
@@ -244,38 +243,6 @@ class ByteStreamHelper {
         const InstanceID = GlobalID.getInstanceID(globalID)
 
         this.stream.writePositiveVIntMax65535(InstanceID)
-    }
-
-    /**
-     * Reading battle player map from ByteStream
-     * @returns { LogicBattlePlayerMap } Instance of LogicBattlePlayerMap
-     */
-    readBattlePlayerMap () {
-        const bool = this.stream.readBoolean()
-        if (!bool) return;
-
-        const BattlePlayerMap = new LogicBattlePlayerMap();
-
-        BattlePlayerMap.decode(this.stream);
-
-        return BattlePlayerMap
-    }
-
-    /**
-     * Writing battle player map to ByteStream
-     * @param { LogicBattlePlayerMap } BattlePlayerMap Instance of LogicBattlePlayerMap
-     */
-    writeBattlePlayerMap (BattlePlayerMap) {
-        if (!(BattlePlayerMap instanceof LogicBattlePlayerMap)) {
-            throw new Error("BattlePlayerMap must be instance of LogicBattlePlayerMap!")
-        }
-
-        const shouldWrite = BattlePlayerMap.compressedMapData != ""
-        this.stream.writeBoolean(shouldWrite)
-
-        if (shouldWrite) {
-            BattlePlayerMap.encode(this.stream)
-        }
     }
 
     writeConstantSizeIntArray (array, size) {
