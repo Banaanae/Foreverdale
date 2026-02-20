@@ -37,8 +37,8 @@ class ClientHelloMessage extends PiranhaMessage {
     if (this.major != LogicVersion.major) {
       const LoginFailed = new LoginFailedMessage(this.session)
       LoginFailed.errorCode = LOGIN_FAILED_REASON.UPDATE
-      LoginFailed.updateUri = "https://github.com/tailsjs/nodebrawl-core"
-      LoginFailed.reason = "Update required to continue playing."
+      LoginFailed.updateUri = "https://github.com/Banaanae/Foreverdale"
+      LoginFailed.reason = "I get knocked down\nBut I get up again\nYou're never gonna keep me down"
       return LoginFailed.send(true)
     }
 
