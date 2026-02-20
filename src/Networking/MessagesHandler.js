@@ -23,7 +23,7 @@ class MessagesHandler {
         const MessageHandler = LogicLaserMessageFactory.createMessageByType(id)
 
         if (!MessageHandler) {
-            this.session.log(`Gotcha undefined ${id} packet!`)
+            this.session.warn(`Gotcha unhandled ${id} packet!`)
             return
         }
 

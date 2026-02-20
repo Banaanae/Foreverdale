@@ -1,14 +1,14 @@
 const net = require('net') // Modules
-const StreamEncrypter = require("./Titan/Crypto")
-const LogicLaserMessageFactory = require('./Protocol/LogicLaserMessageFactory')
-const MessagesHandler = require("./Networking/MessagesHandler")
-const Queue = require("./Networking/Queue")
-const PatcherServer = require("./Patcher/Server")
-const ResourceManager = require("./Titan/ResourceManager")
-const LogicConfig = require("./Logic/Server/LogicConfig")
+const StreamEncrypter = require("./src/Titan/Crypto")
+const LogicLaserMessageFactory = require('./src/Protocol/LogicLaserMessageFactory')
+const MessagesHandler = require("./src/Networking/MessagesHandler")
+const Queue = require("./src/Networking/Queue")
+const PatcherServer = require("./src/Patcher/Server")
+const ResourceManager = require("./src/Titan/ResourceManager")
+const LogicConfig = require("./src/Logic/Server/LogicConfig")
 
 LogicConfig.loadConfig()
-require("./Utils/Logger");
+require("./src/Utils/Logger");
 
 const server = new net.Server() // Class inits
 const Patcher = new PatcherServer()

@@ -5,7 +5,7 @@ class LogicConfig {
     static serverName = "Server"
     static disableQueuebugtxtFile = true
     static patcher = {
-        enabled: true,
+        enabled: false,
         uri: "http://127.0.0.1",
         port: 3000
     }
@@ -46,7 +46,7 @@ class LogicConfig {
     }
 
     static loadConfig () {
-        const config = require("../../cfg/config." + LogicVersion.getServerEnv() + ".json")
+        const config = require("../../../cfg/config." + LogicVersion.getServerEnv() + ".json")
 
         for (const configVar in config) {
             this[configVar] = config[configVar]
