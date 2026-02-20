@@ -1,23 +1,29 @@
 {
-  "name": "foreverdale",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "type": "module",
+  "name": "nodesc-core",
+  "version": "3.0.0-nightly14",
+  "description": "The world's first open source Supercell private server core written on JavaScript.",
+  "main": "index.js",
   "scripts": {
-    "start": "tsx ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Banaanae",
-  "license": "GPL-3.0",
+  "keywords": [],
+  "author": "tailsjs",
+  "license": "ISC",
   "dependencies": {
-    "@types/frida-gum": "^18.3.1",
-    "esbuild": "^0.27.2",
-    "frida": "^16.7.19",
-    "glob": "7.2",
+    "colors": "^1.4.0",
+    "fs": "^0.0.1-security",
+    "glob": "^7.2.0",
+    "js-sha1": "^0.7.0",
+    "koa": "^2.15.3",
+    "koa-range": "^0.3.0",
+    "net": "^1.0.2",
     "simple-rc4": "^0.0.1-b"
   },
   "devDependencies": {
-    "@types/node": "^25.2.2",
-    "tsx": "^4.21.0"
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0"
   }
 }

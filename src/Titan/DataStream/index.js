@@ -1,6 +1,6 @@
-import ByteStream from './ByteStream'
-import BitStream from './BitStream'
-import ByteStreamHelper from './ByteStream/Helper'
+const ByteStream = require('./ByteStream')
+const BitStream = require('./BitStream')
+const ByteStreamHelper = require('./ByteStream/Helper')
 
 class DataStream {
     static getByteStream (bytes) {
@@ -16,4 +16,4 @@ class DataStream {
     }
 }
 
-export default DataStream
+module.exports = DataStream

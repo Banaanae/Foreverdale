@@ -1,4 +1,4 @@
-import LogicConfig from "../../../Logic/LogicConfig"
+const LogicConfig = require("../../../Logic/Server/LogicConfig");
 const Nacl = require("./Nacl"),
     Nonce = require("./Nonce"),
     {
@@ -88,4 +88,4 @@ class PepperEncrypter {
     }
 }
 
-export default PepperEncrypter
+module.exports = PepperEncrypter

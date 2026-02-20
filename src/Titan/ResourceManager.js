@@ -1,7 +1,7 @@
-import LogicResources from "../Logic/Data/LogicResources"
-import CSVNode from "./CSV/CSVNode"
-import fs from "node:fs"
-import path from "node:path"
+const LogicResources = require("../Logic/Data/LogicResources")
+const CSVNode = require("./CSV/CSVNode")
+const fs = require("node:fs")
+const path = require("node:path")
 
 class ResourceManager {
     static init () {
@@ -29,7 +29,7 @@ class ResourceManager {
 
     static loadResourceContent (file) {
         try {
-            const content = fs.readFileSync(path.join(__dirname.replace("/Titan", ""), "csv", file))
+            const content = fs.readFileSync(path.join(__dirname.replace("/Titan", ""), "GameAssets", file))
 
             return content.toString()
         } catch (e) {
@@ -38,4 +38,4 @@ class ResourceManager {
     }
 }
 
-export default ResourceManager
+module.exports = ResourceManager

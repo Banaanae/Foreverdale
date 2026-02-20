@@ -4,7 +4,7 @@
 
 // https://github.com/dcposch/blakejs
 
-import util from './util'
+const util = require('./util')
 
 // 64-bit unsigned addition
 // Sets v[a,a+1] += v[b,b+1]
@@ -358,7 +358,7 @@ function blake2bHex (input, key, outlen, salt, personal) {
   return util.toHex(output)
 }
 
-export default {
+module.exports = {
   blake2b: blake2b,
   blake2bHex: blake2bHex,
   blake2bInit: blake2bInit,

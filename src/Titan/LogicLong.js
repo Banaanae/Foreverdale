@@ -1,4 +1,4 @@
-import ByteStream from "./DataStream/ByteStream";
+const ByteStream = require("./DataStream/ByteStream");
 
 /**
  * LogicLong
@@ -228,4 +228,4 @@ class LogicLong {
     }
 }
 
-export default LogicLong
+module.exports = LogicLong

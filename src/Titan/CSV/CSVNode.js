@@ -1,4 +1,4 @@
-import CSVTable from "./CSVTable.js"
+const CSVTable = require("./CSVTable.js")
 
 class CSVNode {
     fileName = ""
@@ -107,4 +107,4 @@ class CSVNode {
     }
 }
 
-export default CSVNode
+module.exports = CSVNode

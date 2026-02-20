@@ -107,4 +107,4 @@ class CSVColumn {
     }
 }
 
-export default CSVColumn
+module.exports = CSVColumn

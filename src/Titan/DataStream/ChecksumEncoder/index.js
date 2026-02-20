@@ -1,4 +1,4 @@
-import LogicLong from "../../LogicLong";
+const LogicLong = require("../../LogicLong");
 
 class ChecksumEncoder {
     checksum = 0
@@ -101,4 +101,4 @@ class ChecksumEncoder {
     };
 }
 
-export default ChecksumEncoder
+module.exports = ChecksumEncoder

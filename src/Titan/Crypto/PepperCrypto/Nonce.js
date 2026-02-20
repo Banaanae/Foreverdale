@@ -1,7 +1,7 @@
-import Blake2b from "./blake2b",
+const Blake2b = require("./blake2b"),
 crypto = require("crypto");
 
-export default class {
+module.exports = class {
     constructor(input) {
         if (!input) {
             this.nonce = new Uint8Array(crypto.randomBytes(24));

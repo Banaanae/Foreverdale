@@ -1,4 +1,4 @@
-import ChecksumEncoder from '../ChecksumEncoder'
+const ChecksumEncoder = require('../ChecksumEncoder')
 
 /**
   * ByteStream
@@ -406,4 +406,4 @@ class ByteStream extends ChecksumEncoder {
   }
 }
 
-export default ByteStream
+module.exports = ByteStream

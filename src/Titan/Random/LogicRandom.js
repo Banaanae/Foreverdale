@@ -1,4 +1,4 @@
-import ByteStream from "../DataStream/ByteStream";
+const ByteStream = require("../DataStream/ByteStream");
 
 class LogicRandom {
     seed = 0;
@@ -57,4 +57,4 @@ class LogicRandom {
     }
 }
 
-export default LogicRandom
+module.exports = LogicRandom

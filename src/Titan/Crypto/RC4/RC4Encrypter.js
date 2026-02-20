@@ -1,5 +1,5 @@
-import RC4 from 'simple-rc4'
-import LogicConfig from '../../../Logic/Server/LogicConfig';
+const RC4 = require('simple-rc4');
+const LogicConfig = require('../../../Logic/Server/LogicConfig');
 
 /**
  * RC4Encrypter.
@@ -37,4 +37,4 @@ class RC4Encrypter {
   }
 }
 
-export default RC4Encrypter
+module.exports = RC4Encrypter

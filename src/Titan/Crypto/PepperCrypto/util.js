@@ -78,7 +78,7 @@ function testSpeed (hashFn, N, M) {
   }
 }
 
-export default {
+module.exports = {
   normalizeInput: normalizeInput,
   toHex: toHex,
   debugPrint: debugPrint,

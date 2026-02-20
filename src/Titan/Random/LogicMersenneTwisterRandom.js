@@ -54,4 +54,4 @@ class LogicMersenneTwisterRandom {
     }
 }
 
-export default LogicMersenneTwisterRandom
+module.exports = LogicMersenneTwisterRandom

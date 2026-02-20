@@ -1,4 +1,4 @@
-import LogicMath from '../LogicMath'
+const LogicMath = require('../LogicMath')
 
 class CSVRow {
     rowOffset = 0
@@ -119,4 +119,4 @@ class CSVRow {
     }
 }
 
-export default CSVRow
+module.exports = CSVRow

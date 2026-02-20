@@ -1,4 +1,4 @@
-import LogicConfig from "../Logic/Server/LogicConfig";
+const LogicConfig = require("../Logic/Server/LogicConfig");
 
 class Messaging {
     /**
@@ -23,7 +23,7 @@ class Messaging {
      * new ExampleMessage(this.session).send(true)
      * ```
      */
-    async send (doNotEncrypt = false) {
+    async send (doNotEncrypt) {
         if (this.id < 20000) return;
     
         await this.encode()
@@ -136,4 +136,4 @@ class Messaging {
     }
 }
 
-export default Messaging
+module.exports = Messaging

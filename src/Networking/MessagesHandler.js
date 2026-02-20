@@ -1,4 +1,4 @@
-import LogicLaserMessageFactory from "../Messages/LogicLaserMessageFactory"
+const LogicLaserMessageFactory = require("../Protocol/LogicLaserMessageFactory")
 
 class MessagesHandler {
     /**
@@ -9,7 +9,7 @@ class MessagesHandler {
      * @param { Session } session User session (`this.session`)
      * @param { MessageFactory } MessageFactory MessageFactory class instance
      */
-    constructor (session) {
+    constructor (session, MessageFactory) {
         this.session = session
     }
 
@@ -40,4 +40,4 @@ class MessagesHandler {
     }
 }
 
-export default MessagesHandler
+module.exports = MessagesHandler

@@ -1,4 +1,4 @@
-import LogicLong from "./LogicLong"
+const LogicLong = require("./LogicLong")
 
 /**
  * LogicHashTag
@@ -64,4 +64,4 @@ class LogicHashTag {
     }
 }
 
-export default LogicHashTag
+module.exports = LogicHashTag

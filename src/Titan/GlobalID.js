@@ -74,4 +74,4 @@ class GlobalID {
     static decomposeGlobalID = this.parseGlobalID
 }
 
-export default GlobalID
+module.exports = GlobalID

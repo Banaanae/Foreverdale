@@ -1,4 +1,4 @@
-import zlib from 'node:zlib'
+const zlib = require('node:zlib')
 
 /**
  * LogicCompressedString
@@ -48,4 +48,4 @@ class LogicCompressedString {
     }
 }
 
-export default LogicCompressedString
+module.exports = LogicCompressedString

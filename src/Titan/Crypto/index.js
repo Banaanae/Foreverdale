@@ -1,6 +1,6 @@
-import RC4Encrypter from "./RC4/RC4Encrypter"
-import PepperEncrypter from "./PepperCrypto/PepperEncrypter"
-import CRYPTO_ENUM from "../Enums/CryptoTypes"
+const RC4Encrypter = require("./RC4/RC4Encrypter")
+const PepperEncrypter = require("./PepperCrypto/PepperEncrypter")
+const CRYPTO_ENUM = require("../Enums/CryptoTypes")
 
 /**
  * StreamEncrypter
@@ -63,4 +63,4 @@ class StreamEncrypter {
     }
 }
 
-export default StreamEncrypter
+module.exports = StreamEncrypter

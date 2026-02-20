@@ -1,8 +1,8 @@
-import ByteStream from "."
-import BitStream from "../BitStream"
-import GlobalID from "../../GlobalID"
-import LogicLong from "../../LogicLong"
-import LogicBattlePlayerMap from "../../../Logic/LogicBattlePlayerMap"
+const ByteStream = require(".")
+const BitStream = require("../BitStream")
+const GlobalID = require("../../GlobalID")
+const LogicLong = require("../../LogicLong")
+const LogicBattlePlayerMap = require("../../../Logic/LogicBattlePlayerMap")
 
 /**
  * ByteStreamHelper
@@ -297,4 +297,4 @@ class ByteStreamHelper {
     }
 }
 
-export default ByteStreamHelper
+module.exports = ByteStreamHelper

@@ -23,4 +23,4 @@ class LogicUuid {
     }
 }
 
-export default LogicUuid
+module.exports = LogicUuid

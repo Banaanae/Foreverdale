@@ -1,4 +1,4 @@
-import LogicMath from "./LogicMath"
+const LogicMath = require("./LogicMath")
 
 class LogicVector2 {
     x = 0
@@ -177,4 +177,4 @@ class LogicVector2 {
     }
 }
 
-export default LogicVector2
+module.exports = LogicVector2

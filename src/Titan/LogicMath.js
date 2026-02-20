@@ -259,4 +259,4 @@ class LogicMath {
     }
 }
 
-export default LogicMath
+module.exports = LogicMath

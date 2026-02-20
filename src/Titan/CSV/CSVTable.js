@@ -1,5 +1,5 @@
-import CSVColumn from "./CSVColumn"
-import CSVRow from "./CSVRow"
+const CSVColumn = require("./CSVColumn")
+const CSVRow = require("./CSVRow")
 
 const BOOLEAN_VALUE_NOT_SET = 0x2
 const INT_VALUE_NOT_SET = 0x7FFFFFFF
@@ -170,4 +170,4 @@ class CSVTable {
     }
 }
 
-export default CSVTable
+module.exports = CSVTable

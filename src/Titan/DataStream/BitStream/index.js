@@ -203,4 +203,4 @@ class BitStream { // Still in beta.
     }
 }
 
-export default BitStream;
+module.exports = BitStream;
