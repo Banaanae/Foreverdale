@@ -10,7 +10,7 @@ class ShutdownStartedMessage extends PiranhaMessage {
     }
 
     async encode () {
-        this.stream.writeInt(LogicConfig)
+        this.stream.writeInt(LogicConfig.secondsUntilShutdown)
     }
 }
 
