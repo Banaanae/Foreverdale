@@ -4,6 +4,7 @@ class LogicConfig {
     static port = 9339
     static serverName = "Server"
     static disableQueuebugtxtFile = true
+    static secondsUntilShutdown = 300
     static patcher = {
         enabled: false,
         uri: "http://127.0.0.1",

@@ -6,12 +6,15 @@ const Queue = require("./src/Networking/Queue")
 const PatcherServer = require("./src/Patcher/Server")
 const ResourceManager = require("./src/Titan/ResourceManager")
 const LogicConfig = require("./src/Logic/Server/LogicConfig")
+const LogicVersion = require('./src/Logic/LogicVersion')
+const ShutdownStartedMessage = require('./src/Protocol/Messages/Server/ShutdownStartedMessage')
 
 LogicConfig.loadConfig()
 require("./src/Utils/Logger");
 
 const server = new net.Server() // Class inits
 const Patcher = new PatcherServer()
+const serverEnv = LogicVersion.getServerEnv()
 
 const PORT = LogicConfig.port
 
@@ -163,7 +166,7 @@ server.on('connection', async (session) => {
 })
 
 server.once('listening', () => {
-  ServerLog(`${LogicConfig.serverName} started on ${PORT} port!`)
+  ServerLog(`${LogicConfig.serverName} (${serverEnv}) started on ${PORT} port!`)
   if (LogicConfig.patcher.enabled) {
     Patcher.start();
   }
@@ -173,9 +176,20 @@ server.once('listening', () => {
     rl.prompt();
 
     global.rl.on('close', () => {
-      Warn('Server stopped!');
-      server.close();
-      process.exit(0)
+      if (serverEnv === "prod") {
+        Warn('Shutdown started')
+
+        new ShutdownStartedMessage.sendToAll()
+
+        setTimeout(() => {
+          server.close();
+          process.exit(0)
+        }, LogicConfig.secondsUntilShutdown * 1000);
+      } else {
+        Warn('Server stopped!');
+        server.close();
+        process.exit(0)
+      }
     });
   }
 })
