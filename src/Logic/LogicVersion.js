@@ -2,8 +2,8 @@ const SERVER_ENV_ENUM = require("../Titan/Enums/ServerEnv")
 
 class LogicVersion {
     static major = 11
-    static minor = 99
-    static build = 0
+    static minor = 0
+    static build = 99
 
     static environment = SERVER_ENV_ENUM.DEV
 
