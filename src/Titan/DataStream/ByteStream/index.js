@@ -295,10 +295,12 @@ class ByteStream extends ChecksumEncoder {
    * Writing value to Bytes as LongLong (`commonly isn't used`)
    * @param {Number} value Your value to write.
    */
-  writeLongLong (value) {
-    super.writeLongLong(value)
-    this.writeInt(value >> 32)
-    this.writeInt(value)
+  writeLongLong(value) {
+    value = BigInt(value);
+    const low = Number(value & 0xFFFFFFFFn);
+    const high = Number((value >> 32n) & 0xFFFFFFFFn);
+    this.writeInt(low);
+    this.writeInt(high);
   }
 
   /**
