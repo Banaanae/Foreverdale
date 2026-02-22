@@ -1,5 +1,6 @@
 const LogicVersion = require("../../../../Logic/LogicVersion");
 const PiranhaMessage = require("../../../PiranhaMessage");
+const LogicCompressedString = require("../../../../Titan/LogicCompressedString")
 
 class LoginOkMessage extends PiranhaMessage {
     constructor (session) {
@@ -11,14 +12,14 @@ class LoginOkMessage extends PiranhaMessage {
 
     async encode() {
         this.stream.writeLong(0, 1);
-        this.stream.writeLong(0, 1);
-        this.stream.writeString("abc");
+        this.stream.writeLongLong(0, 1);
         this.stream.writeString("");
         this.stream.writeString("");
-        this.stream.writeInt(1);
-        this.stream.writeInt(2);
-        this.stream.writeInt(3);
-        this.stream.writeInt(4);
+        this.stream.writeString("");
+        this.stream.writeInt(11);
+        this.stream.writeInt(0);
+        this.stream.writeInt(99);
+        this.stream.writeInt(11);
         this.stream.writeString(LogicVersion.getServerEnv());
         this.stream.writeInt(0);
         this.stream.writeInt(0);
@@ -31,15 +32,16 @@ class LoginOkMessage extends PiranhaMessage {
         this.stream.writeString("AU");
         this.stream.writeString("");
         this.stream.writeInt(3);
+        this.stream.writeString("https://assets.everdalegame.com");
+        this.stream.writeString("https://game-assets.everdalegame.com");
         this.stream.writeString("");
-        this.stream.writeString("");
-        this.stream.writeString("");
-        this.stream.writeString("");
+        const scidToken = new LogicCompressedString("")
+        scidToken.encode(this.stream)
         this.stream.writeBoolean(true);
         this.stream.writeBoolean(false);
         this.stream.writeBoolean(false);
         this.stream.writeVInt(0);
-        this.stream.writeString("");
+        this.stream.writeStringReference("");
     }
 }
 

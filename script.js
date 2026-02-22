@@ -1,5 +1,5 @@
 const dev = true
-const ip = "192.168.1.117"
+const ip = "192.168.1.196"
 var cache = {
     modules: {},
     options: {}
@@ -129,11 +129,11 @@ function setupHost() {
 			strCtor(args[1], Memory.allocUtf8String("127.0.0.1")); // IP Address here
 			strCtor(args[2], Memory.allocUtf8String("9339")); // Port here
 		}
-	});
+	});*/
 	
 	Interceptor.replace(base.add(0x7548d0), new NativeCallback(function(a1) {
 		a1.writeByteArray([0xFF, 0x45, 0x12, 0x7A, 0x9C, 0x23, 0x4B, 0x67, 0xA1, 0x2D, 0x3E, 0x56, 0x90, 0xAB, 0xC8, 0xD3, 0xE5, 0xF4, 0x6B, 0x72, 0x85, 0x19, 0x3A, 0x4F, 0x28, 0x63, 0x92, 0xBD, 0xFA, 0x34, 0x76, 0x08]);
-	}, 'void', ['pointer']));*/
+	}, 'void', ['pointer']));
 }
 
 function killCrypto() {
@@ -159,21 +159,82 @@ function killCrypto() {
     Interceptor.attach(base.add(0x6975A0).add(0x108), function() { // Messaging::encryptAndWrite
        this.context.w0 = 0x2774;
     });
+    /*Interceptor.replace(
+        base.add(0xA26DD8),
+        new NativeCallback(function () {
+            return 0;
+        }, "int64", [])
+    );*/
+    Interceptor.attach(base.add(0x7FC368), { //Application::getDeviceVerificationResult
+        onLeave: function (retval) {
+            Memory.writeU32(retval, 1);
+        }
+    });
+    /*Interceptor.replace(
+        base.add(0x760C74),
+        new NativeCallback(function () {
+            return 1;
+        }, "int64", ["pointer", "pointer"])
+    );*/
+    Interceptor.replace(base.add(0x601A44), new NativeCallback(function () { // PepperCrypto::box_open
+            return 0; // 0 = success
+        }, "int", ["pointer","int","pointer","int","pointer","pointer"])
+    );
+
+    /*Interceptor.attach(base.add(0x69ED9C), {
+        onEnter(a) {
+            console.log("Application::verifyDeviceIntegrity called")
+            let nonce = base.add(0x1266930)
+            console.log(nonce.readPointer().readByteArray(24))
+            //console.log(nonce.readByteArray(24))
+            //Memory.protect(nonce, 24, "rwx")
+            //noncebase.add(0x1266930).writeByteArray([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
+        }
+    })
+    Interceptor.attach(base.add(0x36FC04), {
+        onEnter(a) {
+            console.log("Application::setDeviceVerificationNonce\n" + a[0].add(16).readPointer(), a[0].add(8).readPointer(), a[0].readPointer())
+        }
+    })
+    Interceptor.attach(base.add(0x7AB9C8), {
+        onEnter(a) {
+            console.log("Application::getDeviceIntegrityNonce")
+        }
+    })*/
     console.log("Done")
 }
 
 function tempTests() {
-    const target = base.add(0x47FBF0);
+    Interceptor.attach(base.add(0xA1EF08), {
+        onEnter(args) {
+            let a1 = args[0];
 
-Interceptor.attach(target, function () {
+            let obj = Memory.readPointer(a1.add(160));
+            let vtable = Memory.readPointer(obj);
 
-    const x8 = this.context.x8;
-    const relative = ptr(x8).sub(base);
+            console.log("obj:", obj);
+            console.log("vtable:", vtable);
 
-    console.log("X8 =", x8);
-    console.log("X8 (module offset) =", relative);
+            let func = Memory.readPointer(vtable.add(24));
+            console.log("virtual func:", func);
+        }
+    });
 
-});
+    Interceptor.attach(base.add(0x760C74), {
+        onExit(ret) {
+            console.log(ret)
+        }
+    })
+
+    setInterval(() => {
+        console.log(base.add(0xF2EC4C).readInt())
+    }, 100);
+
+    Interceptor.replace(base.add(0x69ED9C), new NativeCallback(function () {
+        console.log("a")
+        return 1
+    }, 'int', []))
+
     console.log("Temp tests applied")
 }
 
@@ -182,6 +243,8 @@ function hookDebugger() {
     Interceptor.attach(base.add(0x58E20C), { // Debugger::warning
         onEnter(args) {
             let warning = args[0].readCString();
+            //if (warning == "waiting for nonce from ServerHello")
+            //    base.add(0x1266930).writeByteArray([0x7E, 0xE7, 0x23, 0x04, 0xA7, 0x83, 0xCD, 0x5F, 0x3D, 0x93, 0xF4, 0xBC, 0x3E, 0x84, 0x6A, 0x9B, 0x40, 0xB0, 0x0B, 0x1E, 0x55, 0x01, 0x01, 0x33])
             console.log("[Warning]", warning);
         }
     });
@@ -213,7 +276,7 @@ rpc.exports = {
         if (dev) {
             console.log("Dev mode enabled")
             hookDebugger()
-            tempTests()
+            //tempTests()
         }
     }
 };

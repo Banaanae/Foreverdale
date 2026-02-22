@@ -1,4 +1,5 @@
-const zlib = require('node:zlib')
+const zlib = require('node:zlib');
+const ByteStream = require('./DataStream/ByteStream');
 
 /**
  * LogicCompressedString
