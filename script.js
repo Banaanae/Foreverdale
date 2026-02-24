@@ -1,4 +1,6 @@
 const dev = true
+const logExceptions = false
+const doTempTests = false // dev must be true
 const ip = "192.168.1.196"
 var cache = {
     modules: {},
@@ -34,6 +36,7 @@ function exceptionHandler() {
 const module = Process.getModuleByName("libg.so");
 const base = module.base;
 Memory.protect(base, module.size, "rwx");
+console.log("libg loaded at:", base)
 
 const strCtor = new NativeFunction(base.add(0xA130F8), "pointer", ["pointer", "pointer"]); // Done
 
@@ -109,6 +112,8 @@ function killArxan() {
 	Armceptor.ret(base.add(0x341D98)); // 60% og 0x71DE00
 	Armceptor.ret(base.add(0x9AA32C)); // 80%
 
+    //Armceptor.ret(base.add(0xC48CD0))
+
     console.log("Ret anticheat calls")
 
     Armceptor.ret(base.add(0x2A6738)); // AntiCheat::guard_callback
@@ -131,9 +136,11 @@ function setupHost() {
 		}
 	});*/
 	
-	Interceptor.replace(base.add(0x7548d0), new NativeCallback(function(a1) {
+	/*
+    probably 5C8D40 881CDC
+    Interceptor.replace(base.add(0x7548d0), new NativeCallback(function(a1) {
 		a1.writeByteArray([0xFF, 0x45, 0x12, 0x7A, 0x9C, 0x23, 0x4B, 0x67, 0xA1, 0x2D, 0x3E, 0x56, 0x90, 0xAB, 0xC8, 0xD3, 0xE5, 0xF4, 0x6B, 0x72, 0x85, 0x19, 0x3A, 0x4F, 0x28, 0x63, 0x92, 0xBD, 0xFA, 0x34, 0x76, 0x08]);
-	}, 'void', ['pointer']));
+	}, 'void', ['pointer']));*/
 }
 
 function killCrypto() {
@@ -201,6 +208,12 @@ function killCrypto() {
             console.log("Application::getDeviceIntegrityNonce")
         }
     })*/
+    /*Interceptor.attach(base.add(0x967804), {
+        onEnter(args) {
+            this.state = args[0];
+            console.log("GameState:", this.state);
+        }
+    });*/
     console.log("Done")
 }
 
@@ -269,14 +282,16 @@ rpc.exports = {
     init: function(stage, options) {
         console.log("Started")
         cache.options = options || {};
-        //exceptionHandler()
+        if (logExceptions)
+            exceptionHandler()
         killArxan();
         setupHost();
         killCrypto();
         if (dev) {
             console.log("Dev mode enabled")
             hookDebugger()
-            //tempTests()
+            if (doTempTests)
+                tempTests()
         }
     }
 };

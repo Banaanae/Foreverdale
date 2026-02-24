@@ -4,7 +4,7 @@ const PiranhaMessage = require("../../PiranhaMessage");
 class ShutdownStartedMessage extends PiranhaMessage {
     constructor (session) {
         super(session)
-        this.id = 24548
+        this.id = 28566
         this.version = 0
         this.stream = this.DataStream.getByteStream()
     }
