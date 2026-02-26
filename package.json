@@ -1,6 +1,6 @@
 {
-  "name": "nodesc-core",
-  "version": "3.0.0-nightly14",
+  "name": "everdale-forever",
+  "version": "0.1-alpha",
   "description": "The world's first open source Supercell private server core written on JavaScript.",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,9 @@
   "author": "tailsjs",
   "license": "ISC",
   "dependencies": {
+    "@types/frida-gum": "^18.8.2",
     "colors": "^1.4.0",
+    "frida": "^16.7.19",
     "fs": "^0.0.1-security",
     "glob": "^7.2.0",
     "js-sha1": "^0.7.0",
