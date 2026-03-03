@@ -1,11 +1,6 @@
-const dev = true
 const logExceptions = false
+const dev = true
 const doTempTests = false // dev must be true
-const ip = "192.168.1.196"
-var cache = {
-    modules: {},
-    options: {}
-};
 
 function exceptionHandler() {
     console.log("Enabling exception handler")
@@ -73,85 +68,55 @@ const Armceptor = {
 
 function killArxan() {
     console.log("Killing Arxan")
+
     Interceptor.replace(Module.findExportByName('libc.so', 'openat'), new NativeCallback(function(dirfd, pathname) {
         return -1;
     }, 'int', ['int', 'pointer']));
-
     console.log("Killed openat")
 
 	Armceptor.jumpout(base.add(0x5A5080), base.add(0x5A5EE8));
-	//Armceptor.jumpout(base.add(0x862D70), base.add(0x866784));
     Armceptor.jumpout(base.add(0x9805CC), base.add(0x98153C)); // LoginMessage::encode
-	//Armceptor.jumpout(base.add(0x79D1CC), base.add(0x79E13C));
-	//Armceptor.jumpout(base.add(0x7C48C4), base.add(0x7C56D0));
-	//Armceptor.jumpout(base.add(0x395470), base.add(0x396940));
-
     console.log("Cleaned jumps")
 	
-    // exact same byte sequence surely its correct sob 
-    /*
-	Memory.protect(base.add(0x65E5DC), 4, 'rwx');
-	base.add(0x65E5DC).writeByteArray([0x08, 0x00, 0x80, 0xD2]); // MOV X8, #0
-
-	Memory.protect(base.add(0x65E5E4), 4, 'rwx');
-	base.add(0x65E5E4).writeByteArray([0x08, 0x00, 0x80, 0xD2]);
-    */
-
     Memory.protect(base.add(0x34A828), 4, 'rwx');
 	base.add(0x34A828).writeByteArray([0x08, 0x00, 0x80, 0xD2]); // MOV X8, #0
-
 	Memory.protect(base.add(0x34A830), 4, 'rwx');
 	base.add(0x34A830).writeByteArray([0x08, 0x00, 0x80, 0xD2]);
-
     console.log("Removed crash jumps")
 
 	Armceptor.ret(base.add(0x438A1C)); // 70% OG 0x8760EC
 	Armceptor.ret(base.add(0x95594C)); // 90% sure
 	Armceptor.ret(base.add(0x686F9C)); // Same deal as #1 og 0x831108
-	//Armceptor.ret(base.add(0x71F878));
 	Armceptor.ret(base.add(0x341D98)); // 60% og 0x71DE00
 	Armceptor.ret(base.add(0x9AA32C)); // 80%
-
-    //Armceptor.ret(base.add(0xC48CD0))
-
     console.log("Ret anticheat calls")
 
     Armceptor.ret(base.add(0x2A6738)); // AntiCheat::guard_callback
+    console.log("Killed AntiCheat")
 
-    console.log("Killed AntiCheat\nKilled Arxan successfully")
+    console.log("Killed Arxan successfully")
 }
 
-function setupHost() {
+function setupHost(ip, port) {
+    ip = ip || "127.0.0.1"
+    port = port || "9339"
     Interceptor.attach(base.add(0x920CF4), {
         onEnter(args) {
-            strCtor(args[1], Memory.allocUtf8String(ip)); // IP Address here
-			strCtor(args[2], Memory.allocUtf8String("9339")); // Port here
-            
+            strCtor(args[1], Memory.allocUtf8String(ip));
+			strCtor(args[2], Memory.allocUtf8String(port));
+            console.log(`Redirected host to ${ip}:${port}`)
         }
     })
-	/*Interceptor.attach(base.add(0x975338), {
-		onEnter(args) {
-			strCtor(args[1], Memory.allocUtf8String("127.0.0.1")); // IP Address here
-			strCtor(args[2], Memory.allocUtf8String("9339")); // Port here
-		}
-	});*/
-	
-	/*
-    probably 5C8D40 881CDC
-    Interceptor.replace(base.add(0x7548d0), new NativeCallback(function(a1) {
-		a1.writeByteArray([0xFF, 0x45, 0x12, 0x7A, 0x9C, 0x23, 0x4B, 0x67, 0xA1, 0x2D, 0x3E, 0x56, 0x90, 0xAB, 0xC8, 0xD3, 0xE5, 0xF4, 0x6B, 0x72, 0x85, 0x19, 0x3A, 0x4F, 0x28, 0x63, 0x92, 0xBD, 0xFA, 0x34, 0x76, 0x08]);
-	}, 'void', ['pointer']));*/
 }
 
 function killCrypto() {
     console.log("Killing crypto")
 
-    Armceptor.ret(base.add(0x34342C)); // Messaging::decryptData
-    Interceptor.attach(base.add(0x604A18), {
-        onEnter(a) {
-            console.log("sec box open")
-        }
-    })
+    // Messaging::decryptData
+    Interceptor.replace(base.add(0x34342C), new NativeCallback(function (a1, a2, a3, a4) {
+        return 1
+    }, 'int64', ['int64', 'int64', 'int', 'pointer']));
+
     Interceptor.attach(base.add(0x3E9D84), { // Messaging::sendPepperAuthentication
         onEnter(args) {
             console.log("PepperState is", args[0].add(16).readU32())
@@ -159,133 +124,71 @@ function killCrypto() {
             args[0].add(16).writeU32(5);
             args[1] = args[2];
         },
-        onLeave(re) {
+        onLeave() {
             this.messaging.add(16).writeU32(5);
         }
     });
-    Interceptor.attach(base.add(0x6975A0).add(0x108), function() { // Messaging::encryptAndWrite
-       this.context.w0 = 0x2774;
-    });
-    /*Interceptor.replace(
-        base.add(0xA26DD8),
-        new NativeCallback(function () {
-            return 0;
-        }, "int64", [])
-    );*/
+
+    // Messaging::encryptAndWrite
+	Memory.protect(base.add(0x6976AC), 4, 'rwx');
+	base.add(0x6976AC).writeByteArray([0x08, 0x00, 0x00, 0x14]);
+
     Interceptor.attach(base.add(0x7FC368), { //Application::getDeviceVerificationResult
         onLeave: function (retval) {
             Memory.writeU32(retval, 1);
         }
     });
-    /*Interceptor.replace(
-        base.add(0x760C74),
-        new NativeCallback(function () {
-            return 1;
-        }, "int64", ["pointer", "pointer"])
-    );*/
+
     Interceptor.replace(base.add(0x601A44), new NativeCallback(function () { // PepperCrypto::box_open
-            return 0; // 0 = success
-        }, "int", ["pointer","int","pointer","int","pointer","pointer"])
+            return 0
+        }, "int", ["pointer", "int", "pointer", "int", "pointer", "pointer"])
     );
 
-    /*Interceptor.attach(base.add(0x69ED9C), {
-        onEnter(a) {
-            console.log("Application::verifyDeviceIntegrity called")
-            let nonce = base.add(0x1266930)
-            console.log(nonce.readPointer().readByteArray(24))
-            //console.log(nonce.readByteArray(24))
-            //Memory.protect(nonce, 24, "rwx")
-            //noncebase.add(0x1266930).writeByteArray([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])
-        }
-    })
-    Interceptor.attach(base.add(0x36FC04), {
-        onEnter(a) {
-            console.log("Application::setDeviceVerificationNonce\n" + a[0].add(16).readPointer(), a[0].add(8).readPointer(), a[0].readPointer())
-        }
-    })
-    Interceptor.attach(base.add(0x7AB9C8), {
-        onEnter(a) {
-            console.log("Application::getDeviceIntegrityNonce")
-        }
-    })*/
-    /*Interceptor.attach(base.add(0x967804), {
-        onEnter(args) {
-            this.state = args[0];
-            console.log("GameState:", this.state);
-        }
-    });*/
     console.log("Done")
 }
 
 function tempTests() {
-    Interceptor.attach(base.add(0xA1EF08), {
-        onEnter(args) {
-            let a1 = args[0];
-
-            let obj = Memory.readPointer(a1.add(160));
-            let vtable = Memory.readPointer(obj);
-
-            console.log("obj:", obj);
-            console.log("vtable:", vtable);
-
-            let func = Memory.readPointer(vtable.add(24));
-            console.log("virtual func:", func);
-        }
-    });
-
-    Interceptor.attach(base.add(0x760C74), {
-        onExit(ret) {
-            console.log(ret)
-        }
-    })
-
-    setInterval(() => {
-        console.log(base.add(0xF2EC4C).readInt())
-    }, 100);
-
-    Interceptor.replace(base.add(0x69ED9C), new NativeCallback(function () {
-        console.log("a")
-        return 1
-    }, 'int', []))
+    console.log("Loading temp tests")
 
     console.log("Temp tests applied")
 }
 
 function hookDebugger() {
     console.log("Hooking debugger")
+
     Interceptor.attach(base.add(0x58E20C), { // Debugger::warning
         onEnter(args) {
             let warning = args[0].readCString();
-            //if (warning == "waiting for nonce from ServerHello")
-            //    base.add(0x1266930).writeByteArray([0x7E, 0xE7, 0x23, 0x04, 0xA7, 0x83, 0xCD, 0x5F, 0x3D, 0x93, 0xF4, 0xBC, 0x3E, 0x84, 0x6A, 0x9B, 0x40, 0xB0, 0x0B, 0x1E, 0x55, 0x01, 0x01, 0x33])
             console.log("[Warning]", warning);
         }
     });
+
     Interceptor.attach(base.add(0x555D1C), { // Debugger::error
         onEnter(args) {
             let error = args[0].readCString();
             console.log("[Error]", error);
         }
     });
+
     console.log("Done")
 }
 
 function decodeString(src) {
-  let len = src.add(4).readInt();
-  if (len >= 8) {
-    return src.add(8).readPointer().readUtf8String(len);
-  }
-  return src.add(8).readUtf8String(len);
+    let len = src.add(4).readInt();
+    if (len >= 8) {
+        return src.add(8).readPointer().readUtf8String(len);
+    }
+    return src.add(8).readUtf8String(len);
 }
 
 rpc.exports = {
-    init: function(stage, options) {
+    init: function(stage, parameters) {
         console.log("Started")
-        cache.options = options || {};
         if (logExceptions)
             exceptionHandler()
         killArxan();
-        setupHost();
+        console.log(parameters.length)
+        setupHost(parameters.ip, parameters.port);
         killCrypto();
         if (dev) {
             console.log("Dev mode enabled")
