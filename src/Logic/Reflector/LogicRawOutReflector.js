@@ -51,6 +51,15 @@ class LogicRawOutReflector extends LogicReflector {
         }
     }
 
+    reflectFloat(value, objectName, a4) {
+        if (value === a4) {
+            this.byteStream.writeBoolean(false)
+        } else {
+            this.byteStream.writeBoolean(true)
+            this.byteStream.writeInt(Math.fround(value))
+        }
+    }
+
     reflectString(value, objectName, a5) {
         if (value === a5) {
             this.byteStream.writeBoolean(false);

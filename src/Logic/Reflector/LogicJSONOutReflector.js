@@ -90,6 +90,13 @@ class LogicJSONOutReflector extends LogicReflector {
             this.currentObject[objectName] = longValue;
     }
 
+    reflectFloat(value, objectName, a4) {
+        if (!this.currentObject)
+            console.error("LogicJSONOutReflector: no object exists");
+
+        this.currentObject[objectName] = value;
+    }
+
     reflectString(value, objectName, a5) {
         this.setString(objectName, value, a5);
     }
@@ -253,6 +260,45 @@ class LogicJSONOutReflector extends LogicReflector {
 
         this.currentArray.push(Math.trunc(value));
     }
+
+    /*reflectNextReflectable(reflectable, reflectableType, reflectableData) {
+        v3 = *(_QWORD *)(a1 + 48);
+        if ( a2 )
+        {
+            if ( !this.currentArray )
+            console.error("LogicJSONOutReflector: no current array exists");
+            LogicJSONOutReflector::beginObject(a1, &unk_112BDC);
+            v7 = (*(__int64 (__fastcall **)(__int64))(*(_QWORD *)a2 + 24LL))(a2);
+            if ( a3 == -1 )
+            {
+            if ( !*(_QWORD *)(a1 + 40) )
+                console.error("LogicJSONOutReflector: no object exists");
+            if ( v7 )
+            {
+                v9 = *(_QWORD *)(a1 + 40);
+                sub_A130F8(v12, "aObjectType");
+                v10 = operator new(0x18u);
+                LogicJSONNumber::LogicJSONNumber(v10, v7);
+                LogicJSONObject::put(v9, v12, v10);
+                StringCtor((__int64)v12);
+            }
+            }
+            else if ( v7 != a3 )
+            {
+                console.error("reflectNextReflectable - value type doesn't match required type");
+            }
+            (*(void (__fastcall **)(__int64, __int64))(*(_QWORD *)a2 + 40LL))(a2, a1);
+            sub_74E9D4(a1);
+        }
+        else
+        {
+            v8 = operator new(8u);
+            sub_A3BF0C();
+            LogicJSONArray::add(v3, v8);
+        }
+        return a2;
+        }
+    }*/
 
     pushStack() {
         let jsonRoot = this.currentObject ?? this.currentArray;
